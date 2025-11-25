@@ -12,4 +12,4 @@ router.get("/friends", getMyfriends)
 router.post("/friend-request/:id", sendFriendRequest)
 router.post("/friend-request/:id/accept", acceptFriendRequest)
 router.post("/friend-request", getFriendRequest)
-export default router;
+export default router
