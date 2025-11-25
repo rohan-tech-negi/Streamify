@@ -4,6 +4,7 @@ import authRoutes from "./routes/auth.route.js"
 import { connectDB } from "./lib/db.js"
 import cookieParser from "cookie-parser"
 import userRoutes from "./routes/user.route.js"
+import chatRoutes from "../src/routes/chat.route.js"
 dotenv.config()
 
 connectDB()
