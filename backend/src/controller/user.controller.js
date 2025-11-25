@@ -116,3 +116,8 @@ export async function acceptFriendRequest(){
   }
 }
 
+
+export async function getFriendRequest(req,res) {
+  
+}
+
