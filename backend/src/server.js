@@ -15,7 +15,7 @@ app.use(cookieParser())
 
 app.use("/api/auth", authRoutes)
 app.use("/api/users", userRoutes)
-
+app.use("/api/chat", chatRoutes)
 
 app.listen(PORT,()=>{
     console.log("the app is up on port 5000")
