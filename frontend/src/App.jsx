@@ -2,7 +2,7 @@ import React from 'react'
 
 const App = () => {
   return (
-    <div className='flex  h-screen justify-center items-center' data-theme="valentine">
+    <div className='flex  h-screen justify-center items-center' data-theme="coffee">
       <button className="btn btn-neutral">Neutral</button>
 <button className="btn btn-primary">Primary</button>
 <button className="btn btn-secondary">Secondary</button>
