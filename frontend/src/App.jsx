@@ -7,10 +7,11 @@ import NotificationPage from "./pages/NotificationPage.jsx"
 import CallPage from "./pages/CallPage.jsx"
 import ChatPage from "./pages/ChatPage.jsx"
 import OnboardingPage from "./pages/OnboardingPage.jsx"
+import toast, {Toaster} from "react-hot-toast"
 const App = () => {
   return (
     <div className='flex  h-screen justify-center items-center' data-theme="coffee">
-    
+    <button onClick={()=>toast.success("Hello world")}>Create a toast</button>
     <Routes>
       <Route path='/' element={<HomePage></HomePage>}></Route>
       <Route path='/signup' element={<SignUpPage></SignUpPage>}></Route>
@@ -21,6 +22,7 @@ const App = () => {
       <Route path='/onboarding' element={<OnboardingPage></OnboardingPage>}></Route>
     </Routes>
 
+    <Toaster></Toaster>
     </div>
   )
 }
