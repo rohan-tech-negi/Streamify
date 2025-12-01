@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {Route, Routes} from "react-router"
 import HomePage from "./pages/HomePage.jsx"
 import SignUpPage from "./pages/SignUpPage.jsx"
@@ -8,11 +8,19 @@ import CallPage from "./pages/CallPage.jsx"
 import ChatPage from "./pages/ChatPage.jsx"
 import OnboardingPage from "./pages/OnboardingPage.jsx"
 import {Toaster} from "react-hot-toast"
+import { useQuery } from '@tanstack/react-query'
 const App = () => {
 
-  const [data, setData] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const[error, setError] = useState(null);
+  const{data, isLoading, error} = useQuery({queryKey:"todos", 
+    queryFn: async()=>{
+      const res = await fetch("https://jsonplaceholder.typicode.com/todos")
+      const data = await res.json()
+      return data;
+    }
+  })
+  console.log(data)
+
+
   return (
     <div className='flex  h-screen justify-center items-center' data-theme="coffee">
     
