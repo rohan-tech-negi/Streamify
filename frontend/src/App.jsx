@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {Route, Routes} from "react-router"
 import HomePage from "./pages/HomePage.jsx"
 import SignUpPage from "./pages/SignUpPage.jsx"
@@ -7,11 +7,15 @@ import NotificationPage from "./pages/NotificationPage.jsx"
 import CallPage from "./pages/CallPage.jsx"
 import ChatPage from "./pages/ChatPage.jsx"
 import OnboardingPage from "./pages/OnboardingPage.jsx"
-import toast, {Toaster} from "react-hot-toast"
+import {Toaster} from "react-hot-toast"
 const App = () => {
+
+  const [data, setData] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const[error, setError] = useState(null);
   return (
     <div className='flex  h-screen justify-center items-center' data-theme="coffee">
-    <button onClick={()=>toast.success("Hello world")}>Create a toast</button>
+    
     <Routes>
       <Route path='/' element={<HomePage></HomePage>}></Route>
       <Route path='/signup' element={<SignUpPage></SignUpPage>}></Route>
