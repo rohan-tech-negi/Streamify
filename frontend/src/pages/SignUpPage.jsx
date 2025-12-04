@@ -28,6 +28,31 @@ const SignUpPage = () => {
           </div>
 
           {/* signup form */}
+          <div className='w-full'>
+              <form onSubmit={handleSignup}>
+                  <div className='space-y-4'>
+                    <h2 className='text-xl font-semibold'>Create an Account</h2>
+                    <p className='text-sm opacity-75'>
+                        Join streamify and start your language learning adventure!
+                    </p>
+                  </div>
+                  <div className='space-y-3'>
+                    <div className='form-control w-full'>
+                      <label className='label'>
+                        <span className='label-text'>Full Name</span>
+                      </label>
+                      <input type="text" 
+                        placeholder='John Doe'
+                        className='input input-bordered w-full'
+                        value={signupData.fullName}
+                        onChange={(e)=> setSignupData({...signupData, fullName: e.target.value})}
+                        required
+                      />
+                    </div>
+                  </div>
+
+              </form>
+          </div>
           </div>
 
         </div>

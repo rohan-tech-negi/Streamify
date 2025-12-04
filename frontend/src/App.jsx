@@ -25,7 +25,7 @@ const App = () => {
 
 
   return (
-    <div className='flex  h-screen justify-center items-center' data-theme="coffee">
+    <div className='' data-theme="coffee">
     
     <Routes>
       <Route path='/' element={authUser ? <HomePage></HomePage> : <Navigate to="/login"></Navigate>}></Route>
