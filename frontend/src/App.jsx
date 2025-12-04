@@ -28,7 +28,18 @@ const App = () => {
     <div className='' data-theme="coffee">
     
     <Routes>
-      <Route path='/' element={isAuthenticated ? isOnboarded ? (<HomePage></HomePage>) :(<Navigate to={!isAuthenticated ? "/login" : "/onboarding"}></Navigate>)}></Route>
+  <Route
+          path="/"
+          element={
+            isAuthenticated && isOnboarded ? (
+              <Layout showSidebar={true}>
+                <HomePage />
+              </Layout>
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
+        />
       <Route path='/signup' element={!isAuthenticated ? <SignUpPage></SignUpPage> : <Navigate to="/"></Navigate>}></Route>
       <Route path='/login' element={ !isAuthenticated ?  <LoginPage></LoginPage> : <Navigate to="/"></Navigate>}></Route>
       <Route path='/notification' element ={isAuthenticated ? <NotificationPage></NotificationPage> : <Navigate to="/login"></Navigate>}></Route>
