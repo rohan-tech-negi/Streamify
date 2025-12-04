@@ -31,7 +31,7 @@ const App = () => {
       <Route path='/' element={authUser ? <HomePage></HomePage> : <Navigate to="/login"></Navigate>}></Route>
       <Route path='/signup' element={!authUser ? <SignUpPage></SignUpPage> : <Navigate to="/"></Navigate>}></Route>
       <Route path='/login' element={ !authUser ?  <LoginPage></LoginPage> : <Navigate to="/"></Navigate>}></Route>
-      <Route path='/notification' element={authUser ? <NotificationPage></NotificationPage> : <Navigate to="/login"></Navigate>}></Route>
+      <Route path='/notification' element ={authUser ? <NotificationPage></NotificationPage> : <Navigate to="/login"></Navigate>}></Route>
       <Route path='/call' element={authUser ? <CallPage></CallPage> : <Navigate to="/login"></Navigate>}></Route>
       <Route path='/chat' element={authUser ?  <ChatPage></ChatPage> : <Navigate to="/login"></Navigate>}></Route>
       <Route path='/onboarding' element={authUser ?  <OnboardingPage></OnboardingPage> : <Navigate to="/login"></Navigate>}></Route>

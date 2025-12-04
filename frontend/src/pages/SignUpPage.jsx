@@ -26,6 +26,8 @@ const SignUpPage = () => {
               Streamify
             </span>
           </div>
+
+          {/* signup form */}
           </div>
 
         </div>
