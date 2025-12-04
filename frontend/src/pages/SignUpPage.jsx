@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {ShipWheelIcon} from "lucide-react"
+import {Link} from "react-router"
 const SignUpPage = () => {
   const[signupData, setSignupData] = useState({
     fullName:"",
@@ -49,8 +50,60 @@ const SignUpPage = () => {
                         required
                       />
                     </div>
+                    <div className='form-control w-full'>
+                      <label className='label'>
+                        <span className='label-text'>Email</span>
+                      </label>
+                      <input type="email" 
+                        placeholder='John@gmail.com'
+                        className='input input-bordered w-full'
+                        value={signupData.email}
+                        onChange={(e)=> setSignupData({...signupData, email: e.target.value})}
+                        required
+                      />
+                    </div>
+
+                    <div className='form-control w-full'>
+                      <label className='label'>
+                        <span className='label-text'>Password</span>
+                      </label>
+                      <input type="password" 
+                        placeholder='*********'
+                        className='input input-bordered w-full'
+                        value={signupData.password}
+                        onChange={(e)=> setSignupData({...signupData, password: e.target.value})}
+                        required
+                      />
+                      <p className='text-xs opacity-70 mt-1'>
+                        Password must be atleast 6 character long
+                      </p>
+                    </div>
+
+                    {/* form control */}
+                    <div className="form-control">
+                    <label className="label cursor-pointer justify-start gap-2">
+                      <input type="checkbox" className="checkbox checkbox-sm" required />
+                      <span className="text-xs leading-tight">
+                        I agree to the{" "}
+                        <span className="text-primary hover:underline">terms of service</span> and{" "}
+                        <span className="text-primary hover:underline">privacy policy</span>
+                      </span>
+                    </label>
                   </div>
 
+                  </div>
+
+                  <button className='btn btn-primary w-full' type='submit'>
+                        Create Account
+                  </button>
+                    <div className="text-center mt-4">
+                  <p className="text-sm">
+                    Already have an account?{" "}
+                    <Link to="/login" className="text-primary hover:underline">
+                      Sign in
+                    </Link>
+                  </p>
+                </div>
               </form>
           </div>
           </div>
