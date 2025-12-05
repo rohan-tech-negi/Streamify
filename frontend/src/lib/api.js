@@ -11,3 +11,8 @@ export const getAuthUser = async()=>{
     
       return res.data;
     }
+
+
+export const completeOnboarding = async()=>{
+  
+}
