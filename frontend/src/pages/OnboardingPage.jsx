@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import {toast} from "react-hot-toast"
 import { completeOnboarding } from '../lib/api'
+import {ShuffleIcon } from "lucide-react"
 
 const OnboardingPage = () => {
   const {authUser} = useAuthUser()
@@ -33,6 +34,9 @@ const OnboardingPage = () => {
   };
 
 
+  const handleRandomAvatar =()=>{
+
+  }
 
   return (
     <div className='min-h-screen bg-base-100 flex items-center justify-center p-4'>
@@ -41,7 +45,21 @@ const OnboardingPage = () => {
           <h1 className='text-2xl sm:text-3xl font-bold text-center mb-6'>Complete your profile</h1>
         </div>
           <form onSubmit={handleSubmit} className='space-y-6'>
+              {/* profile picture container */}
+              <div className='flex flex-col items-center justify-center space-y-4'>
+                {/* image preview */}
+                  <div className='size-32 rounded-full bg-base-300 overflow-hidden'>
 
+                  </div>
+
+                  {/* generate random avatar btn */}
+                  <div className="flex items-center gap-2">
+                <button type="button" onClick={handleRandomAvatar} className="btn btn-accent">
+                  <ShuffleIcon className="size-4 mr-2" />
+                  Generate Random Avatar
+                </button>
+              </div>
+              </div>
           </form>
       </div>
 
