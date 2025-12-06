@@ -95,8 +95,15 @@ const OnboardingPage = () => {
               />
             </div>
 
-            {/* native languagee */}
-            
+            {/* languagee */}
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+              {/* native languages */}
+              <div className='form-control'>
+                <label className='label'>
+                    <span className='label-text'>Native Languages</span>
+                </label>
+              </div>
+            </div>
 
 
 
