@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import {useMutation, useQueryClient} from "@tanstack/react-query"
 import {ShipWheelIcon} from "lucide-react"
+import { Link } from "react-router";
 const LoginPage = () => {
   const[loginData, setLoginData] = useState({
     email: "",
@@ -56,6 +57,7 @@ const LoginPage = () => {
                   </div>
 
                   <div className='flex flex-col gap-3 '>
+                    {/* email */}
                        <div className="form-control w-full space-y-2">
                     <label className="label">
                       <span className="label-text">Email</span>
@@ -69,11 +71,46 @@ const LoginPage = () => {
                       required
                     />
                   </div>
+
+
+                  {/* password */}
+                  <div className="form-control w-full space-y-2">
+                    <label className="label">
+                      <span className="label-text">Password</span>
+                    </label>
+                    <input
+                      type="password"
+                      placeholder="••••••••"
+                      className="input input-bordered w-full"
+                      value={loginData.password}
+                      onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                      required
+                    />
                   </div>
-                  
+
+
+                  {/* button */}
+                  <button type="submit" className="btn btn-primary w-full" disabled={isPending}>
+                    {isPending ? (
+                      <>
+                        <span className="loading loading-spinner loading-xs"></span>
+                        Signing in...
+                      </>
+                    ) : (
+                      "Sign In"
+                    )}
+                  </button>
+
+                   <div className="text-center mt-4">
+                    <p className="text-sm">
+                      Don't have an account?{" "}
+                      <Link to="/signup" className="text-primary hover:underline">
+                        Create one
+                      </Link>
+                    </p>
+                  </div>
+                  </div>
                 </div>
-
-
               </form>
           </div>
           </div>
