@@ -20,13 +20,14 @@ const OnboardingPage = () => {
     profilePic: authUser?.profilePic || "",
   });
 
-  const {mutation:onboardingMutation, isPending} = useMutation({
-    mutationFn: completeOnboarding,
-    onSuccess: ()=>{
-      toast.success("profile onboarded successfully");
-      queryClient.invalidateQueries({queryKey: ["authUser"]})
-    }
-  })
+  const { mutate: onboardingMutation, isPending } = useMutation({
+  mutationFn: completeOnboarding,
+  onSuccess: () => {
+    toast.success("Profile onboarded successfully");
+    queryClient.invalidateQueries({ queryKey: ["authUser"] });
+  },
+});
+
 
    const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,7 +37,11 @@ const OnboardingPage = () => {
 
 
   const handleRandomAvatar =()=>{
+        const idx = Math.floor(Math.random() * 100) + 1; // 1-100 included
+    const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
 
+    setFormState({ ...formState, profilePic: randomAvatar });
+    toast.success("Random profile picture generated!");
   }
 
   return (
