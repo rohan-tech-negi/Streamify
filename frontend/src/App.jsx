@@ -29,23 +29,31 @@ const App = () => {
     
     <Routes>
   <Route
-          path="/"
-          element={
-            isAuthenticated && isOnboarded ? (
-              <Layout showSidebar={true}>
-                <HomePage />
-              </Layout>
-            ) : (
-              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
-            )
-          }
-        />
+  path="/"
+  element={
+    isAuthenticated && isOnboarded ? (
+      <HomePage />
+    ) : (
+      <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+    )
+  }
+/>
+
       <Route path='/signup' element={!isAuthenticated ? <SignUpPage></SignUpPage> : <Navigate to="/"></Navigate>}></Route>
       <Route path='/login' element={ !isAuthenticated ?  <LoginPage></LoginPage> : <Navigate to="/"></Navigate>}></Route>
       <Route path='/notification' element ={isAuthenticated ? <NotificationPage></NotificationPage> : <Navigate to="/login"></Navigate>}></Route>
       <Route path='/call' element={isAuthenticated ? <CallPage></CallPage> : <Navigate to="/login"></Navigate>}></Route>
       <Route path='/chat' element={isAuthenticated ?  <ChatPage></ChatPage> : <Navigate to="/login"></Navigate>}></Route>
-      <Route path='/onboarding' element={isAuthenticated ?  <OnboardingPage></OnboardingPage> : <Navigate to="/login"></Navigate>}></Route>
+      <Route path='/onboarding' element={isAuthenticated ? (
+        !isOnboarded ? (
+          <OnboardingPage></OnboardingPage>
+        ) : (
+          <Navigate to= "/"></Navigate>
+        )
+        
+      ) : (
+        <Navigate to="/login"></Navigate>
+      )}></Route>
     </Routes>
 
     <Toaster></Toaster>
