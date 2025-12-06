@@ -59,7 +59,48 @@ const OnboardingPage = () => {
                   Generate Random Avatar
                 </button>
               </div>
+
+             
+
               </div>
+
+
+               {/* full name */}
+               <div className="form-control">
+              <label className="label">
+                <span className="label-text">Full Name</span>
+              </label>
+              <input
+                type="text"
+                name="fullName"
+                value={formState.fullName}
+                onChange={(e) => setFormState({ ...formState, fullName: e.target.value })}
+                className="input input-bordered w-full"
+                placeholder="Your full name"
+              />
+            </div>
+
+
+            {/* bio */}
+             <div className="form-control">
+              <label className="label">
+                <span className="label-text">Bio</span>
+              </label>
+              <textarea
+                name="bio"
+                value={formState.bio}
+                onChange={(e) => setFormState({ ...formState, bio: e.target.value })}
+                className="textarea textarea-bordered h-24"
+                placeholder="Tell others about yourself and your language learning goals"
+              />
+            </div>
+
+            {/* native languagee */}
+            
+
+
+
+
           </form>
       </div>
 
