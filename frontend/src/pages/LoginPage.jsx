@@ -1,64 +1,68 @@
-import React, { useState } from 'react'
-import {useMutation, useQueryClient} from "@tanstack/react-query"
-import {ShipWheelIcon} from "lucide-react"
+import { useState } from "react";
+import { ShipWheelIcon } from "lucide-react";
 import { Link } from "react-router";
+import useLogin from "../hooks/uselogin.js";
+
 const LoginPage = () => {
-  const[loginData, setLoginData] = useState({
+  const [loginData, setLoginData] = useState({
     email: "",
-    password:""
-  })
+    password: "",
+  });
 
-  const queryClient = useQueryClient()
+  // This is how we did it at first, without using our custom hook
+  // const queryClient = useQueryClient();
+  // const {
+  //   mutate: loginMutation,
+  //   isPending,
+  //   error,
+  // } = useMutation({
+  //   mutationFn: login,
+  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+  // });
 
-  const {mutate:loginMutation, isPending, error} = useMutation({
-    mutationFn: loginData, 
-    onSuccess:()=>queryClient.invalidateQueries({queryKey:["authUser"]})
-  })
+  // This is how we did it using our custom hook - optimized version
+  const { isPending, error, loginMutation } = useLogin();
 
-  const handleLogin=(e)=>{
-      e.preventDefault();
-      loginMutation(loginData)
-  }
+  const handleLogin = (e) => {
+    e.preventDefault();
+    loginMutation(loginData);
+  };
 
-  const handleSubmit=()=>{
-
-  }
   return (
-    <div className='h-screen flex items-center justify-center p-4 sm:p-6 md:p-8' data-theme="forest">
+    <div
+      className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8"
+      data-theme="forest"
+    >
       <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden">
-
-
-          {/* login form selection */}
-          <div className='w-full lg:w-1/2 p-4 sm:p-8 flex flex-col'>
-            {/* logo */}
-            <div className='mb-4 flex items-center justify-start gap-2'>
-                <ShipWheelIcon className="size-9 text-primary" />
+        {/* LOGIN FORM SECTION */}
+        <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col">
+          {/* LOGO */}
+          <div className="mb-4 flex items-center justify-start gap-2">
+            <ShipWheelIcon className="size-9 text-primary" />
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary  tracking-wider">
               Streamify
             </span>
-            </div>
+          </div>
 
-            {/* error message display */}
-            {error && (
+          {/* ERROR MESSAGE DISPLAY */}
+          {error && (
             <div className="alert alert-error mb-4">
               <span>{error.response.data.message}</span>
             </div>
           )}
 
-
-          <div className='w-full'>
-              <form onSubmit={handleSubmit}>
-                <div className='space-y-4'>
-                  <div>
-                    <h2 className='text-xl font-semibold'>Welcome Back</h2>
-                  <p className='text-sm opacity-70'>
+          <div className="w-full">
+            <form onSubmit={handleLogin}>
+              <div className="space-y-4">
+                <div>
+                  <h2 className="text-xl font-semibold">Welcome Back</h2>
+                  <p className="text-sm opacity-70">
                     Sign in to your account to continue your language journey
                   </p>
-                  </div>
+                </div>
 
-                  <div className='flex flex-col gap-3 '>
-                    {/* email */}
-                       <div className="form-control w-full space-y-2">
+                <div className="flex flex-col gap-3">
+                  <div className="form-control w-full space-y-2">
                     <label className="label">
                       <span className="label-text">Email</span>
                     </label>
@@ -72,8 +76,6 @@ const LoginPage = () => {
                     />
                   </div>
 
-
-                  {/* password */}
                   <div className="form-control w-full space-y-2">
                     <label className="label">
                       <span className="label-text">Password</span>
@@ -88,8 +90,6 @@ const LoginPage = () => {
                     />
                   </div>
 
-
-                  {/* button */}
                   <button type="submit" className="btn btn-primary w-full" disabled={isPending}>
                     {isPending ? (
                       <>
@@ -101,7 +101,7 @@ const LoginPage = () => {
                     )}
                   </button>
 
-                   <div className="text-center mt-4">
+                  <div className="text-center mt-4">
                     <p className="text-sm">
                       Don't have an account?{" "}
                       <Link to="/signup" className="text-primary hover:underline">
@@ -109,14 +109,14 @@ const LoginPage = () => {
                       </Link>
                     </p>
                   </div>
-                  </div>
                 </div>
-              </form>
-
+              </div>
+            </form>
           </div>
-          </div>
+        </div>
 
-          <div className="hidden lg:flex w-full lg:w-1/2 bg-primary/10 items-center justify-center">
+        {/* IMAGE SECTION */}
+        <div className="hidden lg:flex w-full lg:w-1/2 bg-primary/10 items-center justify-center">
           <div className="max-w-md p-8">
             {/* Illustration */}
             <div className="relative aspect-square max-w-sm mx-auto">
@@ -133,7 +133,6 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
-  )
-}
-
-export default LoginPage
+  );
+};
+export default LoginPage;
