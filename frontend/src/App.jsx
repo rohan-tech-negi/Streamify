@@ -15,7 +15,9 @@ import Layout from "./components/Layout.jsx"
 import PageLoader from './components/PageLoader.jsx'
 // import { getAuthUser } from './lib/api.js'
 import useAuthUser from './hooks/useAuthUser.js'
+import useThemeStore from "./store/useThemeStore.js"
 const App = () => {
+  const {theme} = useThemeStore()
 
   const {isLoading, authUser}  = useAuthUser()
   
@@ -26,7 +28,7 @@ const App = () => {
   if(isLoading) return <PageLoader></PageLoader>
 
   return (
-    <div className='h-screen' data-theme="coffee">
+    <div className='h-screen' data-theme={theme}>
     
     <Routes>
   <Route
