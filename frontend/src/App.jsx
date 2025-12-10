@@ -33,7 +33,7 @@ const App = () => {
   path="/"
   element={
     isAuthenticated && isOnboarded ? (
-      <Layout >
+      <Layout showSidebar={true}>
         <HomePage />
       </Layout>
       
