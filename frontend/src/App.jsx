@@ -29,7 +29,7 @@ const App = () => {
 
   return (
     <div className='h-screen' data-theme={theme}>
-    <button >update to night</button>
+    {/* <button >update to night</button> */}
     <Routes>
   <Route
   path="/"

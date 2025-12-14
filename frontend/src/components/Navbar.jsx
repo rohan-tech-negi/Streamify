@@ -4,6 +4,7 @@ import useAuthUser from '../hooks/useAuthUser'
 import { Link, useLocation } from "react-router";
 import { BellIcon, LogOutIcon, ShipWheelIcon } from "lucide-react";
 import useLogout from "../hooks/useLogout.js"
+import ThemeSelector from './ThemeSelector.jsx';
 
 const Navbar = () => {
   const  {authUser} = useAuthUser()
@@ -36,7 +37,7 @@ const Navbar = () => {
           </div>
 
           {/* TODO */}
-          {/* <ThemeSelector /> */}
+        <ThemeSelector></ThemeSelector>
 
           <div className="avatar">
             <div className="w-9 rounded-full">
