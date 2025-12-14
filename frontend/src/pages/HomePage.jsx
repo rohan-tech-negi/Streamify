@@ -27,17 +27,32 @@ const HomePage = () => {
   });
 
   const { mutate: sendRequestMutation, isPending } = useMutation({
-    mutationFn: sendFriendRequest,
-    onSuccess: (data) => {
-  toast.success("Profile onboarded successfully");
+  mutationFn: sendFriendRequest,
 
-  queryClient.setQueryData(["authUser"], data.user);
+  // ✅ Optimistic UI update (NO refresh feeling)
+  onMutate: async (recipientId) => {
+    setOutgoingRequestsIds((prev) => {
+      const updated = new Set(prev);
+      updated.add(recipientId);
+      return updated;
+    });
+  },
 
-  queryClient.invalidateQueries({ queryKey: ["users"] });
-  queryClient.invalidateQueries({ queryKey: ["friends"] });
-}
-,
-  });
+  // ✅ Background sync with backend
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] });
+  },
+
+  // ✅ Rollback if API fails
+  onError: (err, recipientId) => {
+    setOutgoingRequestsIds((prev) => {
+      const updated = new Set(prev);
+      updated.delete(recipientId);
+      return updated;
+    });
+  },
+});
+
 
   useEffect(() => {
     const outgoingIds = new Set();
@@ -49,7 +64,7 @@ const HomePage = () => {
     }
   }, [outgoingFriendReqs]);
 
-  console.log(recommendedUsers);
+  // console.log(recommendedUsers);
 
 
   return (
