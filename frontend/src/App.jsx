@@ -17,7 +17,7 @@ import PageLoader from './components/PageLoader.jsx'
 import useAuthUser from './hooks/useAuthUser.js'
 import useThemeStore from "./store/useThemeStore.js"
 const App = () => {
-  const {theme} = useThemeStore()
+  const {theme, setTheme} = useThemeStore()
 
   const {isLoading, authUser}  = useAuthUser()
   
@@ -29,7 +29,7 @@ const App = () => {
 
   return (
     <div className='h-screen' data-theme={theme}>
-    
+    <button onClick={()=> setTheme("night")}>update to night</button>
     <Routes>
   <Route
   path="/"
