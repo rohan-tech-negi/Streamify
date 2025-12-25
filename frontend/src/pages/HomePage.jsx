@@ -5,6 +5,8 @@ import {Link} from "react-router"
 import {UsersIcon, UserPlusIcon, CheckCircleIcon, MapPinIcon} from "lucide-react"
 import FriendCard, { getLanguageFlag } from '../components/FriendCard'
 import NoFriendsFound from '../components/NoFriendsFound'
+// imprt {capitialize}
+import {capitialize} from '../lib/utils'
 // import {toast} from "react-hot-toast"
 // import {useThemeStore} from "../store/useThemeStore.js"
 const HomePage = () => {
@@ -202,5 +204,4 @@ const HomePage = () => {
 export default HomePage
 
 
-export const capitialize = (str = "") =>
-  str.charAt(0).toUpperCase() + str.slice(1);
+
