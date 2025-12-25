@@ -5,7 +5,7 @@ import {Link} from "react-router"
 import {UsersIcon, UserPlusIcon, CheckCircleIcon, MapPinIcon} from "lucide-react"
 import FriendCard, { getLanguageFlag } from '../components/FriendCard'
 import NoFriendsFound from '../components/NoFriendsFound'
-import {toast} from "react-hot-toast"
+// import {toast} from "react-hot-toast"
 // import {useThemeStore} from "../store/useThemeStore.js"
 const HomePage = () => {
    const queryClient = useQueryClient();
