@@ -14,6 +14,8 @@ import {
 } from "stream-chat-react";
 import { StreamChat } from 'stream-chat'
 import {toast} from "react-hot-toast"
+// import {ChatLoader} from "../components/ChatLoader.jsx"
+import ChatLoader from "../components/ChatLoader.jsx"
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY
 
@@ -64,11 +66,25 @@ const ChatPage = () => {
         setLoading(false)
       }
     }
- },[])
+    initChat()
+ },[tokenData,authUser, targetUserId])
 
  if(loading || !chatClient || !channel) return <ChatLoader></ChatLoader>
   return (
-    <div>ChatPage</div>
+    <div className='h-[93vh]'>
+      <Chat client={chatClient}>
+        <Channel channel={channel}>
+          <div className='w-full relative'>
+
+            <Window>
+              <ChannelHeader></ChannelHeader>
+              <MessageList></MessageList>
+              <MessageInput focus></MessageInput>
+            </Window>
+          </div>
+        </Channel>
+      </Chat>
+    </div>
   )
 }
 
