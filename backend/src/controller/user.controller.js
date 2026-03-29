@@ -1,26 +1,27 @@
-import User from "../models/user.js";
-import FriendRequest from "../models/FriendRequest.js"
-export async function getRecommendedUsers(req,res){
-    try {
-        const currentUserId  = req.user.id;
-        const currentUser = req.user
+import User from "../models/User.js";
+import FriendRequest from "../models/FriendRequest.js";
 
-        const recommendedUsers = await User.find({
-            $and:[
-                {_id: {$ne: currentUserId}},
-                {_id:{$nin: currentUser.friends}},
-                {isOnboarded: true}
-            ]
-        })
-        res.status(200).json(recommendedUsers)
-    } catch (error) {
-        console.log("Error in getRecommended conrtoller", error.message)
-        res.status(500).json({message:"Internal server error"})
-    }
+export async function getRecommendedUsers(req, res) {
+  try {
+    const currentUserId = req.user.id;
+    const currentUser = req.user;
+
+    const recommendedUsers = await User.find({
+      $and: [
+        { _id: { $ne: currentUserId } }, //exclude current user
+        { _id: { $nin: currentUser.friends } }, // exclude current user's friends
+        { isOnboarded: true },
+      ],
+    });
+    res.status(200).json(recommendedUsers);
+  } catch (error) {
+    console.error("Error in getRecommendedUsers controller", error.message);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 }
 
-export async function getMyfriends(req,res){
-    try {
+export async function getMyFriends(req, res) {
+  try {
     const user = await User.findById(req.user.id)
       .select("friends")
       .populate("friends", "fullName profilePic nativeLanguage learningLanguage");
@@ -32,9 +33,8 @@ export async function getMyfriends(req,res){
   }
 }
 
-
-export async function  sendFriendRequest(req,res){
-    try {
+export async function sendFriendRequest(req, res) {
+  try {
     const myId = req.user.id;
     const { id: recipientId } = req.params;
 
@@ -79,10 +79,8 @@ export async function  sendFriendRequest(req,res){
   }
 }
 
-
-
-export async function acceptFriendRequest(req,res){
-    try {
+export async function acceptFriendRequest(req, res) {
+  try {
     const { id: requestId } = req.params;
 
     const friendRequest = await FriendRequest.findById(requestId);
@@ -116,9 +114,8 @@ export async function acceptFriendRequest(req,res){
   }
 }
 
-
-export async function getFriendRequest(req,res) {
-     try {
+export async function getFriendRequests(req, res) {
+  try {
     const incomingReqs = await FriendRequest.find({
       recipient: req.user.id,
       status: "pending",
@@ -136,9 +133,8 @@ export async function getFriendRequest(req,res) {
   }
 }
 
-
-export async function getOutgoingFriendReqs(req,res) {
-     try {
+export async function getOutgoingFriendReqs(req, res) {
+  try {
     const outgoingRequests = await FriendRequest.find({
       sender: req.user.id,
       status: "pending",
