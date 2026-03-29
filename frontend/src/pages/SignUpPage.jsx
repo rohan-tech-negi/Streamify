@@ -1,106 +1,116 @@
-import React, { useState } from 'react'
-import {ShipWheelIcon} from "lucide-react"
-import {Link} from "react-router"
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-// import { axiosInstance } from '../lib/axios';
-import { signup } from '../lib/api';
+import { useState } from "react";
+import { ShipWheelIcon } from "lucide-react";
+import { Link } from "react-router";
+
+import useSignUp from "../hooks/useSignUp";
+
 const SignUpPage = () => {
-  const[signupData, setSignupData] = useState({
-    fullName:"",
-    email:"",
-    password:""
+  const [signupData, setSignupData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
   });
 
-  const queryClient = useQueryClient()
+  // This is how we did it at first, without using our custom hook
+  // const queryClient = useQueryClient();
+  // const {
+  //   mutate: signupMutation,
+  //   isPending,
+  //   error,
+  // } = useMutation({
+  //   mutationFn: signup,
+  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
+  // });
 
-  const{mutate, isPending ,error} = useMutation({
-    mutationFn: signup,
+  // This is how we did it using our custom hook - optimized version
+  const { isPending, error, signupMutation } = useSignUp();
 
-  onSuccess:()=> queryClient.invalidateQueries({queryKey:["authUser"]})
-  })
-  
-
-  const handleSignup = (e) =>{
-    e.preventDefault()
-    mutate(signupData)
-  }
-
+  const handleSignup = (e) => {
+    e.preventDefault();
+    signupMutation(signupData);
+  };
 
   return (
-    <div className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8"
-      data-theme="forest">
-        <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden">
-
-          {/* signup form - left side */}
-          <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col">
-            {/* logo */}
-            <div className="mb-4 flex items-center justify-start gap-2">
+    <div
+      className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8"
+      data-theme="forest"
+    >
+      <div className="border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden">
+        {/* SIGNUP FORM - LEFT SIDE */}
+        <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col">
+          {/* LOGO */}
+          <div className="mb-4 flex items-center justify-start gap-2">
             <ShipWheelIcon className="size-9 text-primary" />
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
               Streamify
             </span>
           </div>
 
-          {/* error message */}
+          {/* ERROR MESSAGE IF ANY */}
           {error && (
-            <div className='alert alert-error mb-4'>
+            <div className="alert alert-error mb-4">
               <span>{error.response.data.message}</span>
             </div>
           )}
 
-          {/* signup form */}
-          <div className='w-full'>
-              <form onSubmit={handleSignup}>
-                  <div className='space-y-4'>
-                    <h2 className='text-xl font-semibold'>Create an Account</h2>
-                    <p className='text-sm opacity-75'>
-                        Join streamify and start your language learning adventure!
+          <div className="w-full">
+            <form onSubmit={handleSignup}>
+              <div className="space-y-4">
+                <div>
+                  <h2 className="text-xl font-semibold">Create an Account</h2>
+                  <p className="text-sm opacity-70">
+                    Join Streamify and start your language learning adventure!
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  {/* FULLNAME */}
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text">Full Name</span>
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="John Doe"
+                      className="input input-bordered w-full"
+                      value={signupData.fullName}
+                      onChange={(e) => setSignupData({ ...signupData, fullName: e.target.value })}
+                      required
+                    />
+                  </div>
+                  {/* EMAIL */}
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text">Email</span>
+                    </label>
+                    <input
+                      type="email"
+                      placeholder="john@gmail.com"
+                      className="input input-bordered w-full"
+                      value={signupData.email}
+                      onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
+                      required
+                    />
+                  </div>
+                  {/* PASSWORD */}
+                  <div className="form-control w-full">
+                    <label className="label">
+                      <span className="label-text">Password</span>
+                    </label>
+                    <input
+                      type="password"
+                      placeholder="********"
+                      className="input input-bordered w-full"
+                      value={signupData.password}
+                      onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
+                      required
+                    />
+                    <p className="text-xs opacity-70 mt-1">
+                      Password must be at least 6 characters long
                     </p>
                   </div>
-                  <div className='space-y-3'>
-                    <div className='form-control w-full'>
-                      <label className='label'>
-                        <span className='label-text'>Full Name</span>
-                      </label>
-                      <input type="text" 
-                        placeholder='John Doe'
-                        className='input input-bordered w-full'
-                        value={signupData.fullName}
-                        onChange={(e)=> setSignupData({...signupData, fullName: e.target.value})}
-                        required
-                      />
-                    </div>
-                    <div className='form-control w-full'>
-                      <label className='label'>
-                        <span className='label-text'>Email</span>
-                      </label>
-                      <input type="email" 
-                        placeholder='John@gmail.com'
-                        className='input input-bordered w-full'
-                        value={signupData.email}
-                        onChange={(e)=> setSignupData({...signupData, email: e.target.value})}
-                        required
-                      />
-                    </div>
 
-                    <div className='form-control w-full'>
-                      <label className='label'>
-                        <span className='label-text'>Password</span>
-                      </label>
-                      <input type="password" 
-                        placeholder='*********'
-                        className='input input-bordered w-full'
-                        value={signupData.password}
-                        onChange={(e)=> setSignupData({...signupData, password: e.target.value})}
-                        required
-                      />
-                      <p className='text-xs opacity-70 mt-1'>
-                        Password must be atleast 6 character long
-                      </p>
-                    </div>
-
-                    {/* form control */}
-                    <div className="form-control">
+                  <div className="form-control">
                     <label className="label cursor-pointer justify-start gap-2">
                       <input type="checkbox" className="checkbox checkbox-sm" required />
                       <span className="text-xs leading-tight">
@@ -110,18 +120,20 @@ const SignUpPage = () => {
                       </span>
                     </label>
                   </div>
+                </div>
 
-                  </div>
+                <button className="btn btn-primary w-full" type="submit">
+                  {isPending ? (
+                    <>
+                      <span className="loading loading-spinner loading-xs"></span>
+                      Loading...
+                    </>
+                  ) : (
+                    "Create Account"
+                  )}
+                </button>
 
-                  <button className='btn btn-primary w-full' type='submit'>
-                        {isPending ? (
-                          <>
-                            <span className='loading loading-spinner loading-xs'></span>
-                            Loading...
-                          </>
-                        ) : ("Create Account")}
-                  </button>
-                    <div className="text-center mt-4">
+                <div className="text-center mt-4">
                   <p className="text-sm">
                     Already have an account?{" "}
                     <Link to="/login" className="text-primary hover:underline">
@@ -129,12 +141,13 @@ const SignUpPage = () => {
                     </Link>
                   </p>
                 </div>
-              </form>
+              </div>
+            </form>
           </div>
-          </div>
+        </div>
 
-          {/* signup of the right */}
-          <div className="hidden lg:flex w-full lg:w-1/2 bg-primary/10 items-center justify-center">
+        {/* SIGNUP FORM - RIGHT SIDE */}
+        <div className="hidden lg:flex w-full lg:w-1/2 bg-primary/10 items-center justify-center">
           <div className="max-w-md p-8">
             {/* Illustration */}
             <div className="relative aspect-square max-w-sm mx-auto">
@@ -149,11 +162,9 @@ const SignUpPage = () => {
             </div>
           </div>
         </div>
-
-        </div>
-
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUpPage
+export default SignUpPage;

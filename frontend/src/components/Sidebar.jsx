@@ -1,15 +1,12 @@
-import React from 'react'
-import useAuthUser from '../hooks/useAuthUser'
-import { useLocation } from 'react-router'
-import { Link } from 'react-router'
-import { ShipWheelIcon, HomeIcon, UsersIcon,BellIcon, } from 'lucide-react'
+import { Link, useLocation } from "react-router";
+import useAuthUser from "../hooks/useAuthUser";
+import { BellIcon, HomeIcon, ShipWheelIcon, UsersIcon } from "lucide-react";
 
 const Sidebar = () => {
-    const {authUser} = useAuthUser()
-    const location = useLocation()
-    const currentPath = location.pathname;
+  const { authUser } = useAuthUser();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
-    console.log(currentPath)
   return (
     <aside className="w-64 bg-base-200 border-r border-base-300 hidden lg:flex flex-col h-screen sticky top-0">
       <div className="p-5 border-b border-base-300">
@@ -43,7 +40,7 @@ const Sidebar = () => {
         </Link>
 
         <Link
-          to="/notification"
+          to="/notifications"
           className={`btn btn-ghost justify-start w-full gap-3 px-3 normal-case ${
             currentPath === "/notifications" ? "btn-active" : ""
           }`}
@@ -71,7 +68,6 @@ const Sidebar = () => {
         </div>
       </div>
     </aside>
-  )
-}
-
-export default Sidebar
+  );
+};
+export default Sidebar;

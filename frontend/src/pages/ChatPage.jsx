@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import useAuthUser from "../hooks/useAuthUser";
 import { useQuery } from "@tanstack/react-query";
 import { getStreamToken } from "../lib/api";
-import useAuthUser from "../hooks/useAuthUser";
+
 import {
-  Chat,
   Channel,
   ChannelHeader,
-  MessageList,
+  Chat,
   MessageInput,
+  MessageList,
+  Thread,
   Window,
 } from "stream-chat-react";
 import { StreamChat } from "stream-chat";
-import { toast } from "react-hot-toast";
+import toast from "react-hot-toast";
+
 import ChatLoader from "../components/ChatLoader";
+import CallButton from "../components/CallButton";
 
 const STREAM_API_KEY = import.meta.env.VITE_STREAM_API_KEY;
 
@@ -32,7 +36,7 @@ const ChatPage = () => {
     enabled: !!authUser, // this will run only when authUser is available
   });
 
-   useEffect(() => {
+  useEffect(() => {
     const initChat = async () => {
       if (!tokenData?.token || !authUser) return;
 
@@ -76,23 +80,36 @@ const ChatPage = () => {
     initChat();
   }, [tokenData, authUser, targetUserId]);
 
-  if (loading || !chatClient || !channel) {
-    return <ChatLoader />;
-  }
+  const handleVideoCall = () => {
+    if (channel) {
+      const callUrl = `${window.location.origin}/call/${channel.id}`;
+
+      channel.sendMessage({
+        text: `I've started a video call. Join me here: ${callUrl}`,
+      });
+
+      toast.success("Video call link sent successfully!");
+    }
+  };
+
+  if (loading || !chatClient || !channel) return <ChatLoader />;
 
   return (
     <div className="h-[93vh]">
       <Chat client={chatClient}>
         <Channel channel={channel}>
-          <Window>
-            <ChannelHeader />
-            <MessageList />
-            <MessageInput focus />
-          </Window>
+          <div className="w-full relative">
+            <CallButton handleVideoCall={handleVideoCall} />
+            <Window>
+              <ChannelHeader />
+              <MessageList />
+              <MessageInput focus />
+            </Window>
+          </div>
+          <Thread />
         </Channel>
       </Chat>
     </div>
   );
 };
-
 export default ChatPage;

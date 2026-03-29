@@ -1,35 +1,27 @@
-// import React from 'react'
-
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { acceptFriendRequest, getFriendRequests } from "../lib/api";
-import { UserCheckIcon ,MessageSquareIcon, BellIcon, ClockIcon} from "lucide-react";
+import { BellIcon, ClockIcon, MessageSquareIcon, UserCheckIcon } from "lucide-react";
 import NoNotificationsFound from "../components/NoNotificationsFound";
 
-const NotificationPage = () => {
+const NotificationsPage = () => {
   const queryClient = useQueryClient();
 
-   const {
-    data: friendRequests,
-    isLoading,
-  } = useQuery({
+  const { data: friendRequests, isLoading } = useQuery({
     queryKey: ["friendRequests"],
     queryFn: getFriendRequests,
-    refetchInterval: 3000,           // 🔥 auto-refresh every 3s
-    refetchOnWindowFocus: true,      // 🔥 refetch when tab becomes active
   });
 
-
-
-  const {mutate:acceptRequestsMutation, isPending} = useMutation({
+  const { mutate: acceptRequestMutation, isPending } = useMutation({
     mutationFn: acceptFriendRequest,
-    onSuccess: ()=>{
-      queryClient.invalidateQueries({queryKey:["friendRequests"]})
-      queryClient.invalidateQueries({queryKey: ["friend"]})
-    }
-  })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
+      queryClient.invalidateQueries({ queryKey: ["friends"] });
+    },
+  });
 
-  const incomingRequests = friendRequests?.incomingReqs || []
-  const acceptedRequests = friendRequests?.acceptedReqs || []
+  const incomingRequests = friendRequests?.incomingReqs || [];
+  const acceptedRequests = friendRequests?.acceptedReqs || [];
+
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="container mx-auto max-w-4xl space-y-8">
@@ -41,15 +33,15 @@ const NotificationPage = () => {
           </div>
         ) : (
           <>
-            {
-              incomingRequests.length > 0 && (
-                <section className="space-y-4">
-                  <h2 className="text-xl font-semibold flex items-center gap-2">
-                    <UserCheckIcon className="h-5 w-5 text-primary"></UserCheckIcon>
-                    Friend Requests
-                    <span className="badge badge-primary ml-1">{incomingRequests.length}</span>
-                  </h2>
-                  <div className="space-y-3">
+            {incomingRequests.length > 0 && (
+              <section className="space-y-4">
+                <h2 className="text-xl font-semibold flex items-center gap-2">
+                  <UserCheckIcon className="h-5 w-5 text-primary" />
+                  Friend Requests
+                  <span className="badge badge-primary ml-2">{incomingRequests.length}</span>
+                </h2>
+
+                <div className="space-y-3">
                   {incomingRequests.map((request) => (
                     <div
                       key={request._id}
@@ -76,7 +68,7 @@ const NotificationPage = () => {
 
                           <button
                             className="btn btn-primary btn-sm"
-                            onClick={() => acceptRequestsMutation(request._id)}
+                            onClick={() => acceptRequestMutation(request._id)}
                             disabled={isPending}
                           >
                             Accept
@@ -86,12 +78,11 @@ const NotificationPage = () => {
                     </div>
                   ))}
                 </div>
-                </section>
-              )
-            } 
+              </section>
+            )}
 
-             {/*ACCEPTED REQS NOTIFICATIONS  */}
-              {acceptedRequests.length > 0 && (
+            {/* ACCEPTED REQS NOTIFICATONS */}
+            {acceptedRequests.length > 0 && (
               <section className="space-y-4">
                 <h2 className="text-xl font-semibold flex items-center gap-2">
                   <BellIcon className="h-5 w-5 text-success" />
@@ -132,15 +123,12 @@ const NotificationPage = () => {
             )}
 
             {incomingRequests.length === 0 && acceptedRequests.length === 0 && (
-              // <NotificationPage></NotificationPage>
-              <NoNotificationsFound></NoNotificationsFound>
+              <NoNotificationsFound />
             )}
           </>
         )}
       </div>
-
     </div>
-  )
-}
-
-export default NotificationPage
+  );
+};
+export default NotificationsPage;

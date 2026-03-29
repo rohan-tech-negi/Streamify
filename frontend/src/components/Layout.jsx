@@ -1,6 +1,6 @@
-import React from 'react'
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
+import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
+
 const Layout = ({ children, showSidebar = false }) => {
   return (
     <div className="min-h-screen">
@@ -14,7 +14,6 @@ const Layout = ({ children, showSidebar = false }) => {
         </div>
       </div>
     </div>
-  )
-}
-
-export default Layout
+  );
+};
+export default Layout;

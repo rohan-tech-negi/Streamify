@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react'
-import {useQueryClient, useQuery, useMutation} from "@tanstack/react-query"
-import { getOutgoingFriendReqs, getRecommendedUsers, getUserFriends, sendFriendRequest } from '../lib/api'
-import {Link} from "react-router"
-import {UsersIcon, UserPlusIcon, CheckCircleIcon, MapPinIcon} from "lucide-react"
-import FriendCard, { getLanguageFlag } from '../components/FriendCard'
-import NoFriendsFound from '../components/NoFriendsFound'
-// imprt {capitialize}
-import {capitialize} from '../lib/utils'
-// import {toast} from "react-hot-toast"
-// import {useThemeStore} from "../store/useThemeStore.js"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import {
+  getOutgoingFriendReqs,
+  getRecommendedUsers,
+  getUserFriends,
+  sendFriendRequest,
+} from "../lib/api";
+import { Link } from "react-router";
+import { CheckCircleIcon, MapPinIcon, UserPlusIcon, UsersIcon } from "lucide-react";
+
+import { capitialize } from "../lib/utils";
+
+import FriendCard, { getLanguageFlag } from "../components/FriendCard";
+import NoFriendsFound from "../components/NoFriendsFound";
+
 const HomePage = () => {
-   const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   const [outgoingRequestsIds, setOutgoingRequestsIds] = useState(new Set());
 
   const { data: friends = [], isLoading: loadingFriends } = useQuery({
@@ -29,32 +34,9 @@ const HomePage = () => {
   });
 
   const { mutate: sendRequestMutation, isPending } = useMutation({
-  mutationFn: sendFriendRequest,
-
-  // ✅ Optimistic UI update (NO refresh feeling)
-  onMutate: async (recipientId) => {
-    setOutgoingRequestsIds((prev) => {
-      const updated = new Set(prev);
-      updated.add(recipientId);
-      return updated;
-    });
-  },
-
-  // ✅ Background sync with backend
-  onSuccess: () => {
-    queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] });
-  },
-
-  // ✅ Rollback if API fails
-  onError: (err, recipientId) => {
-    setOutgoingRequestsIds((prev) => {
-      const updated = new Set(prev);
-      updated.delete(recipientId);
-      return updated;
-    });
-  },
-});
-
+    mutationFn: sendFriendRequest,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] }),
+  });
 
   useEffect(() => {
     const outgoingIds = new Set();
@@ -66,26 +48,23 @@ const HomePage = () => {
     }
   }, [outgoingFriendReqs]);
 
-  // console.log(recommendedUsers);
-
-
   return (
-    <div className='p-4 sm:p-6 lg:p-8'>
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="container mx-auto space-y-10">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Your Friends</h2>
-          <Link to="/notification" className="btn btn-outline btn-sm">
+          <Link to="/notifications" className="btn btn-outline btn-sm">
             <UsersIcon className="mr-2 size-4" />
             Friend Requests
           </Link>
         </div>
 
-         {loadingFriends ? (
+        {loadingFriends ? (
           <div className="flex justify-center py-12">
             <span className="loading loading-spinner loading-lg" />
           </div>
         ) : friends.length === 0 ? (
-        <NoFriendsFound></NoFriendsFound>
+          <NoFriendsFound />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {friends.map((friend) => (
@@ -95,7 +74,7 @@ const HomePage = () => {
         )}
 
         <section>
-           <div className="mb-6 sm:mb-8">
+          <div className="mb-6 sm:mb-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
                 <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Meet New Learners</h2>
@@ -106,23 +85,19 @@ const HomePage = () => {
             </div>
           </div>
 
-
           {loadingUsers ? (
-            <div className='flex justify-center py-12'>
-              <span className='loading loading-spinner loading-lg'>
-              
-              </span>
+            <div className="flex justify-center py-12">
+              <span className="loading loading-spinner loading-lg" />
             </div>
           ) : recommendedUsers.length === 0 ? (
-            <div className='card bg-base-200 p-6 text-center'>
-              <h3 className='font-semibold text-lg mb-2'>No recommendations avilable</h3>
-              <p className='text-base-content opacity-70'>
-                Check back later for new language partners
+            <div className="card bg-base-200 p-6 text-center">
+              <h3 className="font-semibold text-lg mb-2">No recommendations available</h3>
+              <p className="text-base-content opacity-70">
+                Check back later for new language partners!
               </p>
             </div>
-          ): (
-
-             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {recommendedUsers.map((user) => {
                 const hasRequestBeenSent = outgoingRequestsIds.has(user._id);
 
@@ -150,20 +125,14 @@ const HomePage = () => {
 
                       {/* Languages with flags */}
                       <div className="flex flex-wrap gap-1.5">
-                        {user.nativeLanguage && (
-  <span className="badge badge-secondary">
-    {getLanguageFlag(capitialize(user.nativeLanguage))}
-    Native: {capitialize(user.nativeLanguage)}
-  </span>
-)}
-
-{user.learningLanguage && (
-  <span className="badge badge-outline">
-    {getLanguageFlag(capitialize(user.learningLanguage))}
-    Learning: {capitialize(user.learningLanguage)}
-  </span>
-)}
-
+                        <span className="badge badge-secondary">
+                          {getLanguageFlag(user.nativeLanguage)}
+                          Native: {capitialize(user.nativeLanguage)}
+                        </span>
+                        <span className="badge badge-outline">
+                          {getLanguageFlag(user.learningLanguage)}
+                          Learning: {capitialize(user.learningLanguage)}
+                        </span>
                       </div>
 
                       {user.bio && <p className="text-sm opacity-70">{user.bio}</p>}
@@ -195,13 +164,9 @@ const HomePage = () => {
             </div>
           )}
         </section>
-
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
-
-
-
+export default HomePage;
